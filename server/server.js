@@ -20,7 +20,10 @@ const connectDB = () => {
 connectDB();
 
 app.use("/api/products", productRouter);
-app.use("/api/allproducts", productRouter);
+app.use("/api/bottleProducts", productRouter);
+app.use("/api/notebookProducts", productRouter);
+app.use("/api/solorProducts", productRouter);
+app.use("/api/bagProducts", productRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

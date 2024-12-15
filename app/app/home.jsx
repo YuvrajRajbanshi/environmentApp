@@ -13,35 +13,18 @@ import {
 import { Link } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
-import ALL_ITEMS from "../constants/homepageproducts";
-import allImages from "../constants/homeImages";
 import axios from "axios";
 
 const Home = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
-  const Container = Platform.OS === "web" ? ScrollView : SafeAreaView;
-
-  const handleSearch = (text) => {
-    setSearchQuery(text);
-    if (text) {
-      const filtered = ALL_ITEMS.filter((item) =>
-        item.title.toLowerCase().includes(text.toLowerCase())
-      );
-      setFilteredData(filtered);
-    } else {
-      setFilteredData([]);
-    }
-  };
-
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
     await axios
-      .get("http://10.10.100.126:5000/test") // Updated IP
+      .get("http://10.10.100.126:5000/api/products/home") // Updated IP
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setData(response.data);
       })
       .catch((error) => {
@@ -53,6 +36,23 @@ const Home = () => {
     fetchData();
   }, []);
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+  const [heart, setHeart] = useState(false);
+  const Container = Platform.OS === "web" ? ScrollView : SafeAreaView;
+
+  const handleSearch = (text) => {
+    setSearchQuery(text);
+    if (text) {
+      const filtered = data.filter((item) =>
+        item.title.toLowerCase().includes(text.toLowerCase())
+      );
+      setFilteredData(filtered);
+    } else {
+      setFilteredData([]);
+    }
+  };
+
   return (
     <SafeAreaView style={{ backgroundColor: "#F5F5DC", flex: 1 }}>
       {/* Welcome Section */}
@@ -60,7 +60,7 @@ const Home = () => {
         ListHeaderComponent={
           <>
             <View style={{ marginTop: 20, alignItems: "center" }}>
-              <Text style={styles.heading}>Hello, Welcome to EcoSwap1 </Text>
+              <Text style={styles.heading}>Hello, Welcome to EcoSwap </Text>
 
               <Text
                 style={{ textAlign: "center", color: "#228B22", fontSize: 40 }}
@@ -70,12 +70,6 @@ const Home = () => {
               <Text style={styles.subhead}>
                 Discover eco-friendly choices today.
               </Text>
-            </View>
-
-            {/* Response from Server */}
-            <View>
-              <Text>Response from server:</Text>
-              <Text>don't{data.samy} hi</Text>
             </View>
 
             {/* Trending Section */}
@@ -131,14 +125,40 @@ const Home = () => {
             </View>
           </>
         }
-        data={searchQuery ? filteredData : ALL_ITEMS}
+        data={searchQuery ? filteredData : data}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.productCard}>
-            <Image source={allImages[item.id - 1]} style={styles.menuImage} />
-            <Text style={styles.productTitle}>{item.title}</Text>
-            <Text style={styles.productDescription}>{item.description}</Text>
-            <Text style={styles.productPrice}>₹ {item.price}</Text>
+            {console.log(item)}
+            <Link
+              href="/productDetails"
+              style={{ marginLeft: 340, marginTop: 10 }}
+            >
+              <AntDesign name="arrowright" size={24} color="black" />
+            </Link>
+            <Image source={{ uri: item.img }} style={styles.tasveer} />
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <View style={styles.bg}>
+                <Text style={styles.productTitle}>{item.title}</Text>
+                <Text style={styles.productDescription}>
+                  {item.description
+                    ? item.description.length > 50
+                      ? item.description.substring(0, 50) + "..."
+                      : item.description
+                    : "No description available"}
+                </Text>
+                <Text style={styles.productPrice}>₹ {item.price}</Text>
+              </View>
+
+              <AntDesign
+                name="heart"
+                size={30}
+                color="red"
+                style={{ marginLeft: -40, marginTop: 10, paddingRight: 20 }}
+              />
+            </View>
           </View>
         )}
         ListEmptyComponent={
@@ -154,6 +174,19 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
+  tasveer: {
+    width: 100,
+    height: 100,
+    alignSelf: "center",
+    marginBottom: 10,
+  },
+  bg: {
+    backgroundColor: "#B5E6BD",
+    // height: 200,
+    width: 388,
+    padding: 10,
+    borderRadius: 10,
+  },
   heading: {
     color: "#228B22",
     fontSize: 28,
@@ -209,7 +242,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     backgroundColor: "white",
     borderRadius: 8,
-    padding: 15,
+    // padding: 15,
     marginVertical: 10,
     shadowColor: "#000",
     shadowOpacity: 0.1,
@@ -226,18 +259,17 @@ const styles = StyleSheet.create({
   productTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    textAlign: "center",
   },
   productDescription: {
     fontSize: 14,
     color: "gray",
-    textAlign: "center",
+    width: "70%",
+
     marginVertical: 5,
   },
   productPrice: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#228B22",
-    textAlign: "center",
+    color: "green",
   },
 });
