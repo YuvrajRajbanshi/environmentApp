@@ -22,9 +22,9 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const Container = Platform.OS === "web" ? ScrollView : SafeAreaView;
+
   const handleSearch = (text) => {
     setSearchQuery(text);
-
     if (text) {
       const filtered = ALL_ITEMS.filter((item) =>
         item.title.toLowerCase().includes(text.toLowerCase())
@@ -38,9 +38,8 @@ const Home = () => {
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
-    axios
-      // .get("localhost:5000/test")
-      .get("http://localhost:5000/test")
+    await axios
+      .get("http://10.10.100.126:5000/test") // Updated IP
       .then((response) => {
         console.log(response.data);
         setData(response.data);
@@ -55,114 +54,100 @@ const Home = () => {
   }, []);
 
   return (
-    <View style={{ backgroundColor: "#F5F5DC", height: "100%" }}>
-      <SafeAreaView>
-        <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
-          {/* Welcome Section */}
-          <View style={{ marginTop: 20, alignItems: "center" }}>
-            <Text style={styles.heading}>Hello, Welcome to EcoSwap </Text>
-            <Text
-              style={{ textAlign: "center", color: "#228B22", fontSize: 40 }}
-            >
-              Yuvraj
-            </Text>
-            <Text style={styles.subhead}>
-              Discover eco-friendly choices today.
-            </Text>
-          </View>
+    <SafeAreaView style={{ backgroundColor: "#F5F5DC", flex: 1 }}>
+      {/* Welcome Section */}
+      <FlatList
+        ListHeaderComponent={
+          <>
+            <View style={{ marginTop: 20, alignItems: "center" }}>
+              <Text style={styles.heading}>Hello, Welcome to EcoSwap1 </Text>
 
-          {/* Trending Section */}
-          <View style={{ marginVertical: 20 }}>
-            <Text style={styles.trend}>Trending Now</Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.horizontalScroll}
-            >
-              <View style={styles.trendingItem}>
-                {/* <Text style={styles.trendingText}>🌿 Reusable Bottles</Text> */}
-                <Link href="/bottles" asChild>
-                  <Pressable>
-                    <Text style={styles.trendingText}>🌿 Reusable Bottles</Text>
-                  </Pressable>
-                </Link>
-              </View>
-              <View style={styles.trendingItem}>
-                <Link href="/notebooks" asChild>
-                  <Pressable>
-                    <Text style={styles.trendingText}>🌱 Eco Notebooks</Text>
-                  </Pressable>
-                </Link>
-              </View>
-              <View style={styles.trendingItem}>
-                <Link href="/solar" asChild>
-                  <Pressable>
-                    <Text style={styles.trendingText}>🌞 Solar Chargers</Text>
-                  </Pressable>
-                </Link>
-              </View>
-              <View style={styles.trendingItem}>
-                <Link href="/bags" asChild>
-                  <Pressable>
-                    <Text style={styles.trendingText}>♻️ Sustainable Bags</Text>
-                  </Pressable>
-                </Link>
-              </View>
-            </ScrollView>
-          </View>
+              <Text
+                style={{ textAlign: "center", color: "#228B22", fontSize: 40 }}
+              >
+                Yuvraj
+              </Text>
+              <Text style={styles.subhead}>
+                Discover eco-friendly choices today.
+              </Text>
+            </View>
 
-          {/* Search Bar */}
-          <View style={styles.container}>
-            <TextInput
-              style={styles.searchBar}
-              placeholder="Search for products..."
-              // value={searchQuery}r
-              onChangeText={handleSearch}
-            />
+            {/* Response from Server */}
+            <View>
+              <Text>Response from server:</Text>
+              <Text>don't{data.samy} hi</Text>
+            </View>
 
-            {/* Display Filtered Results */}
+            {/* Trending Section */}
+            <View style={{ marginVertical: 20 }}>
+              <Text style={styles.trend}>Trending Now</Text>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.horizontalScroll}
+              >
+                <View style={styles.trendingItem}>
+                  <Link href="/bottles" asChild>
+                    <Pressable>
+                      <Text style={styles.trendingText}>
+                        🌿 Reusable Bottles
+                      </Text>
+                    </Pressable>
+                  </Link>
+                </View>
+                <View style={styles.trendingItem}>
+                  <Link href="/notebooks" asChild>
+                    <Pressable>
+                      <Text style={styles.trendingText}>🌱 Eco Notebooks</Text>
+                    </Pressable>
+                  </Link>
+                </View>
+                <View style={styles.trendingItem}>
+                  <Link href="/solar" asChild>
+                    <Pressable>
+                      <Text style={styles.trendingText}>🌞 Solar Chargers</Text>
+                    </Pressable>
+                  </Link>
+                </View>
+                <View style={styles.trendingItem}>
+                  <Link href="/bags" asChild>
+                    <Pressable>
+                      <Text style={styles.trendingText}>
+                        ♻️ Sustainable Bags
+                      </Text>
+                    </Pressable>
+                  </Link>
+                </View>
+              </ScrollView>
+            </View>
 
-            <FlatList
-              data={searchQuery ? filteredData : []}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => (
-                <TouchableOpacity style={styles.resultItem}>
-                  {/* <Text style={styles.resultText}>{item.title}</Text> */}
-                </TouchableOpacity>
-              )}
-              ListEmptyComponent={
-                searchQuery && filteredData.length === 0 ? (
-                  <Text style={styles.noResults}>No results found</Text>
-                ) : null
-              }
-            />
-          </View>
-
-          {/* Product List */}
-          <Container>
-            <View style={{ margin: 10 }}>
-              <FlatList
-                data={searchQuery ? filteredData : ALL_ITEMS}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                  <View style={styles.productCard}>
-                    <Image
-                      source={allImages[item.id - 1]}
-                      style={styles.menuImage}
-                    />
-                    <Text style={styles.productTitle}>{item.title}</Text>
-                    <Text style={styles.productDescription}>
-                      {item.description}
-                    </Text>
-                    <Text style={styles.productPrice}>₹ {item.price}</Text>
-                  </View>
-                )}
+            {/* Search Bar */}
+            <View style={styles.container}>
+              <TextInput
+                style={styles.searchBar}
+                placeholder="Search for products..."
+                onChangeText={handleSearch}
               />
             </View>
-          </Container>
-        </ScrollView>
-      </SafeAreaView>
-    </View>
+          </>
+        }
+        data={searchQuery ? filteredData : ALL_ITEMS}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.productCard}>
+            <Image source={allImages[item.id - 1]} style={styles.menuImage} />
+            <Text style={styles.productTitle}>{item.title}</Text>
+            <Text style={styles.productDescription}>{item.description}</Text>
+            <Text style={styles.productPrice}>₹ {item.price}</Text>
+          </View>
+        )}
+        ListEmptyComponent={
+          searchQuery && filteredData.length === 0 ? (
+            <Text style={styles.noResults}>No results found</Text>
+          ) : null
+        }
+      />
+    </SafeAreaView>
   );
 };
 
@@ -198,15 +183,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     backgroundColor: "white",
-  },
-  resultItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-  resultText: {
-    fontSize: 16,
-    color: "#333",
   },
   noResults: {
     marginTop: 20,

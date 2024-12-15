@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Link } from "expo-router";
-import signup1 from "../assets/photos/signup.png";
+import signup1 from "../assets/photos/signin.png";
 
 const signup = () => {
   const [name, setName] = useState("");

@@ -9,11 +9,21 @@ app.use(express.json());
 
 import testRouter from "./routes/test.js";
 
+const connectDB = () => {
+  try {
+    const success = mongoose.connect("mongodb://localhost:27017/ecoswap");
+    console.log("Database has connected successfully my bro");
+  } catch (error) {
+    console.log("Database has failed to connect", error);
+  }
+};
+connectDB();
+
 app.get("/", (req, res) => {
   res.json({
     message: "Hello I am Yuvraj and try to check if it's working or not",
     test: "Sky fall ",
-    sanjana: "Hello Meri 💝 kaise hai tu",
+    samy: "Hello Meri 💝 kaise hai tu",
   });
 });
 
@@ -23,7 +33,7 @@ app.get("/test", (req, res) => {
   res.json({
     message: "Hello I am Yuvraj and try to check if it's working or not",
     test: "Sky fall ",
-    sanjana: "Hello Meri hope kaise hai tu",
+    samy: "Hello Meri hope kaise hai tu",
   });
 });
 

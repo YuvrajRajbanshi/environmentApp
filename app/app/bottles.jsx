@@ -4,59 +4,51 @@ import {
   Image,
   StyleSheet,
   FlatList,
-  ScrollView,
   Platform,
 } from "react-native";
 import React from "react";
-import btlBanner from "../assets/photos/btlBanner.png";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Link } from "expo-router";
 import ALL_BOTTLES from "../constants/bottels";
 import btlImages from "../constants/bottleImages";
 
-const bottles = () => {
-  const Container = Platform.OS === "web" ? ScrollView : SafeAreaView;
-  return (
-    <ScrollView style={{ backgroundColor: "#F5F5DC", flex: 1 }}>
-      <SafeAreaView>
-        <Link href="/home" style={{ marginLeft: 20, marginTop: 20 }}>
-          <AntDesign name="arrowleft" size={24} color="black" />
-        </Link>
+const Bottles = () => {
+  const Container = Platform.OS === "web" ? View : SafeAreaView;
 
-        <View style={{ margin: 10 }}>
-          <FlatList
-            data={ALL_BOTTLES}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.productCard}>
-                <Image
-                  source={btlImages[item.id - 1]}
-                  style={styles.menuImage}
-                />
-                <Text style={styles.productTitle}>{item.title}</Text>
-                <Text style={styles.productDescription}>
-                  {item.description}
-                </Text>
-                <Text style={styles.productPrice}>₹ {item.price}</Text>
-              </View>
-            )}
-          />
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+  return (
+    <Container style={{ backgroundColor: "#F5F5DC", flex: 1 }}>
+      {/* Back Button */}
+      <Link href="/home" style={{ marginLeft: 20, marginTop: 20 }}>
+        <AntDesign name="arrowleft" size={24} color="black" />
+      </Link>
+
+      {/* Product List */}
+      <View style={{ marginVertical: 20 }}>
+        <FlatList
+          data={ALL_BOTTLES}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          renderItem={({ item }) => (
+            <View style={styles.productCard}>
+              <Image source={btlImages[item.id - 1]} style={styles.menuImage} />
+              <Text style={styles.productTitle}>{item.title}</Text>
+              <Text style={styles.productDescription}>{item.description}</Text>
+              <Text style={styles.productPrice}>₹ {item.price}</Text>
+            </View>
+          )}
+          ListEmptyComponent={
+            <Text style={styles.noProductsText}>No products available</Text>
+          }
+        />
+      </View>
+    </Container>
   );
 };
 
-export default bottles;
+export default Bottles;
 
 const styles = StyleSheet.create({
-  banner: {
-    marginTop: 10,
-    width: "100%",
-    margin: "auto",
-    height: 400,
-  },
   productCard: {
     marginHorizontal: 30,
     backgroundColor: "white",
@@ -91,5 +83,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#228B22",
     textAlign: "center",
+  },
+  noProductsText: {
+    textAlign: "center",
+    color: "gray",
+    marginTop: 20,
+    fontSize: 16,
   },
 });
