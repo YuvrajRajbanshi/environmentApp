@@ -7,14 +7,32 @@ import {
   Platform,
 } from "react-native";
 import React from "react";
+import { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Link } from "expo-router";
-import ALL_BOTTLES from "../constants/bottels";
 import btlImages from "../constants/bottleImages";
+import axios from "axios";
 
 const bags = () => {
   const Container = Platform.OS === "web" ? View : SafeAreaView;
+  const [data, setData] = useState([]);
+
+  const fetchData = async () => {
+    await axios
+      .get("http://10.10.100.126:5000/api/bagProducts/bag") // Updated IP
+      .then((response) => {
+        // console.log(response.data);
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <Container style={{ backgroundColor: "#F5F5DC", flex: 1 }}>
@@ -26,15 +44,44 @@ const bags = () => {
       {/* Product List */}
       <View style={{ marginVertical: 20 }}>
         <FlatList
-          data={ALL_BOTTLES}
+          data={data}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{ paddingBottom: 20 }}
           renderItem={({ item }) => (
             <View style={styles.productCard}>
-              <Image source={btlImages[item.id - 1]} style={styles.menuImage} />
-              <Text style={styles.productTitle}>{item.title}</Text>
-              <Text style={styles.productDescription}>{item.description}</Text>
-              <Text style={styles.productPrice}>₹ {item.price}</Text>
+              {console.log(item)}
+              <Link
+                href="/productDetails"
+                style={{ marginLeft: 340, marginTop: 10 }}
+              >
+                <AntDesign name="arrowright" size={24} color="black" />
+              </Link>
+              <Image source={{ uri: item.img }} style={styles.tasveer} />
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <View style={styles.bg}>
+                  <Text style={styles.productTitle}>{item.title}</Text>
+                  <Text style={styles.productDescription}>
+                    {item.description
+                      ? item.description.length > 50
+                        ? item.description.substring(0, 50) + "..."
+                        : item.description
+                      : "No description available"}
+                  </Text>
+                  <Text style={styles.productPrice}>₹ {item.price}</Text>
+                </View>
+
+                <AntDesign
+                  name="heart"
+                  size={30}
+                  color="red"
+                  style={{ marginLeft: -40, marginTop: 10, paddingRight: 20 }}
+                />
+              </View>
             </View>
           )}
           ListEmptyComponent={
@@ -49,11 +96,24 @@ const bags = () => {
 export default bags;
 
 const styles = StyleSheet.create({
+  tasveer: {
+    width: 100,
+    height: 100,
+    alignSelf: "center",
+    marginBottom: 10,
+  },
+  bg: {
+    backgroundColor: "#B5E6BD",
+    // height: 200,
+    width: 388,
+    padding: 10,
+    borderRadius: 10,
+  },
   productCard: {
     marginHorizontal: 30,
     backgroundColor: "white",
     borderRadius: 8,
-    padding: 15,
+    // padding: 15,
     marginVertical: 10,
     shadowColor: "#000",
     shadowOpacity: 0.1,
@@ -70,24 +130,17 @@ const styles = StyleSheet.create({
   productTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    textAlign: "center",
   },
   productDescription: {
     fontSize: 14,
     color: "gray",
-    textAlign: "center",
+    width: "70%",
+
     marginVertical: 5,
   },
   productPrice: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#228B22",
-    textAlign: "center",
-  },
-  noProductsText: {
-    textAlign: "center",
-    color: "gray",
-    marginTop: 20,
-    fontSize: 16,
+    color: "green",
   },
 });

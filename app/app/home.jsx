@@ -14,6 +14,7 @@ import { Link } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
 
 import axios from "axios";
 
@@ -59,14 +60,26 @@ const Home = () => {
       <FlatList
         ListHeaderComponent={
           <>
-            <View style={{ marginTop: 20, alignItems: "center" }}>
-              <Text style={styles.heading}>Hello, Welcome to EcoSwap </Text>
+            <View style={{ marginTop: 0, alignItems: "center" }}>
+              {/* <Text style={styles.heading}>Hello, Welcome to EcoSwap </Text>
 
               <Text
                 style={{ textAlign: "center", color: "#228B22", fontSize: 40 }}
               >
                 Yuvraj
-              </Text>
+              </Text> */}
+
+              <Link
+                href="/profile"
+                style={{ marginLeft: 340, marginBottom: 20 }}
+              >
+                <EvilIcons
+                  name="user"
+                  size={50}
+                  color="black"
+                  style={{ fontWeight: "bold" }}
+                />
+              </Link>
               <Text style={styles.subhead}>
                 Discover eco-friendly choices today.
               </Text>
