@@ -5,6 +5,7 @@ import {
   bagProducts,
   notebookProducts,
   solarProducts,
+  oneProduct,
 } from "../controllers/products.controller.js";
 
 const router = express.Router();
@@ -19,4 +20,5 @@ router.get("/bag", bagProducts);
 router.get("/notebook", notebookProducts);
 router.get("/solar", solarProducts);
 // router.get()
+
 export default router;

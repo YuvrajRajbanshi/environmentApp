@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 import productRouter from "./routes/products.routes.js";
+import userRouter from "./routes/user.routes.js";
 
 const app = express();
 const port = 5000;
@@ -25,6 +26,11 @@ app.use("/api/notebookProducts", productRouter);
 app.use("/api/solorProducts", productRouter);
 app.use("/api/bagProducts", productRouter);
 
+// for single product
+app.use("/api/product", userRouter);
+
+// only for users
+app.use("/api/user", userRouter);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

@@ -49,3 +49,12 @@ export const solarProducts = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+export const oneProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const solarProduct = await Bottle.findById(id);
+    res.status(200).json(solarProduct);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};

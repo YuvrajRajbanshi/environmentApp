@@ -6,12 +6,10 @@ import {
   FlatList,
   Platform,
 } from "react-native";
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Link } from "expo-router";
-import btlImages from "../constants/bottleImages";
 import axios from "axios";
 
 const Bottles = () => {
@@ -19,15 +17,14 @@ const Bottles = () => {
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
-    await axios
-      .get("http://10.10.100.126:5000/api/products/bottle") // Updated IP
-      .then((response) => {
-        // console.log(response.data);
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      const response = await axios.get(
+        "http://10.10.100.126:5000/api/products/bottle"
+      );
+      setData(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -45,17 +42,10 @@ const Bottles = () => {
       <View style={{ marginVertical: 20 }}>
         <FlatList
           data={data}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item._id.toString()}
           contentContainerStyle={{ paddingBottom: 20 }}
           renderItem={({ item }) => (
             <View style={styles.productCard}>
-              {console.log(item)}
-              <Link
-                href="/productDetails"
-                style={{ marginLeft: 340, marginTop: 10 }}
-              >
-                <AntDesign name="arrowright" size={24} color="black" />
-              </Link>
               <Image source={{ uri: item.img }} style={styles.tasveer} />
               <View
                 style={{
@@ -74,7 +64,6 @@ const Bottles = () => {
                   </Text>
                   <Text style={styles.productPrice}>₹ {item.price}</Text>
                 </View>
-
                 <AntDesign
                   name="heart"
                   size={30}
@@ -82,6 +71,27 @@ const Bottles = () => {
                   style={{ marginLeft: -40, marginTop: 10, paddingRight: 20 }}
                 />
               </View>
+              {/* Navigate with ID */}
+              {/* <Link
+                href={`/productDetails/${item._id}`}
+                style={{
+                  alignSelf: "flex-end",
+                  marginRight: 20,
+                  marginTop: 10,
+                }}
+              >
+                <AntDesign name="arrowright" size={24} color="black" />
+              </Link> */}
+              <Link
+                href={`/productDetails/${item._id}`}
+                style={{
+                  alignSelf: "flex-end",
+                  marginRight: 20,
+                  marginTop: 10,
+                }}
+              >
+                <AntDesign name="arrowright" size={24} color="black" />
+              </Link>
             </View>
           )}
           ListEmptyComponent={
@@ -104,7 +114,6 @@ const styles = StyleSheet.create({
   },
   bg: {
     backgroundColor: "#B5E6BD",
-    // height: 200,
     width: 388,
     padding: 10,
     borderRadius: 10,
@@ -113,19 +122,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     backgroundColor: "white",
     borderRadius: 8,
-    // padding: 15,
     marginVertical: 10,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
     elevation: 3,
-  },
-  menuImage: {
-    width: 100,
-    height: 100,
-    alignSelf: "center",
-    marginBottom: 10,
   },
   productTitle: {
     fontSize: 18,
@@ -135,12 +137,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "gray",
     width: "70%",
-
     marginVertical: 5,
   },
   productPrice: {
     fontSize: 16,
     fontWeight: "bold",
     color: "green",
+  },
+  noProductsText: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "gray",
+    marginTop: 20,
   },
 });
