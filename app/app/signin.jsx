@@ -67,13 +67,13 @@ const SignIn = () => {
         )}
 
         {/* for temp purpose only remove it later */}
-        <View>
+        {/* <View>
           <Link href="/home" asChild>
             <Pressable style={styles.btn}>
               <Text style={styles.sig}>Sign In</Text>
             </Pressable>
           </Link>
-        </View>
+        </View> */}
       </SafeAreaView>
     </View>
   );

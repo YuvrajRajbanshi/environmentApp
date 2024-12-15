@@ -43,6 +43,9 @@ export default function RootLayout() {
         <Stack.Screen name="notebooks" options={{ headerShown: false }} />
         <Stack.Screen name="solar" options={{ headerShown: false }} />
         <Stack.Screen name="bags" options={{ headerShown: false }} />
+        <Stack.Screen name="productDetails" options={{ headerShown: false }} />
+        <Stack.Screen name="thankyou" options={{ headerShown: false }} />
+        <Stack.Screen name="profile" options={{ headerShown: false }} />
 
         <Stack.Screen name="+not-found" />
       </Stack>

@@ -9,12 +9,29 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Link } from "expo-router";
-import signup1 from "../assets/photos/signup.png";
+import signup1 from "../assets/photos/signin.png";
+import axios from "axios";
 
 const signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleSubmit = () => {
+    axios
+      .post("http://10.10.100.126:5000/api/product/newUser", {
+        name,
+        email,
+        password,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <View style={{ backgroundColor: "#F5F5DC", height: "100%" }}>
       <SafeAreaView style={{ marginTop: 70 }}>
@@ -67,13 +84,13 @@ const signup = () => {
         )}
 
         {/* for temp purpose only remove it later */}
-        <View>
+        {/* <View>
           <Link href="/home" asChild>
-            <Pressable style={styles.btn}>
+            <Pressable style={styles.btn} onPress={handleSubmit}>
               <Text style={styles.sig}>Sign Up</Text>
             </Pressable>
           </Link>
-        </View>
+        </View> */}
       </SafeAreaView>
     </View>
   );
