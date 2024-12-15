@@ -2,12 +2,12 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 
+import productRouter from "./routes/products.routes.js";
+
 const app = express();
 const port = 5000;
 app.use(cors());
 app.use(express.json());
-
-import testRouter from "./routes/test.js";
 
 const connectDB = () => {
   try {
@@ -19,23 +19,8 @@ const connectDB = () => {
 };
 connectDB();
 
-app.get("/", (req, res) => {
-  res.json({
-    message: "Hello I am Yuvraj and try to check if it's working or not",
-    test: "Sky fall ",
-    samy: "Hello Meri 💝 kaise hai tu",
-  });
-});
-
-app.get("/api/hello", testRouter);
-
-app.get("/test", (req, res) => {
-  res.json({
-    message: "Hello I am Yuvraj and try to check if it's working or not",
-    test: "Sky fall ",
-    samy: "Hello Meri hope kaise hai tu",
-  });
-});
+app.use("/api/products", productRouter);
+app.use("/api/allproducts", productRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
