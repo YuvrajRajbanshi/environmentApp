@@ -23,7 +23,9 @@ const Home = () => {
 
   const fetchData = async () => {
     await axios
-      .get("http://10.10.100.126:5000/api/products/home") // Updated IP
+      // http://10.10.100.126:5000/api/product/newUser
+      .get("http://130.1.95.192:5000/api/products/home") // Updated IP
+      // .get("http://130.1.95.192:5000/api/notebookProducts/notebook") // Updated IP
       .then((response) => {
         // console.log(response.data);
         setData(response.data);

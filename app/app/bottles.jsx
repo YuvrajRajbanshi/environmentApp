@@ -19,7 +19,7 @@ const Bottles = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://10.10.100.126:5000/api/products/bottle"
+        "http://130.1.95.192:5000/api/products/bottle"
       );
       setData(response.data);
     } catch (error) {

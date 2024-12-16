@@ -17,17 +17,15 @@ import axios from "axios";
 const notebooks = () => {
   const Container = Platform.OS === "web" ? View : SafeAreaView;
   const [data, setData] = useState([]);
-
   const fetchData = async () => {
-    await axios
-      .get("http://10.10.100.126:5000/api/notebookProducts/notebook") // Updated IP
-      .then((response) => {
-        // console.log(response.data);
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      const response = await axios.get(
+        "http://130.1.95.192:5000/api/notebookProducts/notebook"
+      ); // Updated IP
+      setData(response.data); // Assuming setData is a state updater function
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   useEffect(() => {

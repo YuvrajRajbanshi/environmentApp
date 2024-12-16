@@ -26,11 +26,16 @@ app.use("/api/notebookProducts", productRouter);
 app.use("/api/solorProducts", productRouter);
 app.use("/api/bagProducts", productRouter);
 
+app.get("/", (req, res) => {
+  res.json({ message: "Hello bro" });
+});
+
 // for single product
-app.use("/api/product", userRouter);
+// app.use("/api/product", userRouter);
 
 // only for users
-app.use("/api/user", userRouter);
+// app.use("/api/user", userRouter);
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

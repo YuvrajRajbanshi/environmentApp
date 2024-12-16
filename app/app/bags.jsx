@@ -20,7 +20,7 @@ const bags = () => {
 
   const fetchData = async () => {
     await axios
-      .get("http://10.10.100.126:5000/api/bagProducts/bag") // Updated IP
+      .get("http://130.1.95.192:5000/api/notebookProducts/notebook") // Updated IP
       .then((response) => {
         // console.log(response.data);
         setData(response.data);

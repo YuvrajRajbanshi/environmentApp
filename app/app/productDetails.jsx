@@ -11,9 +11,9 @@ import { Link } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import picture from "../assets/photos/shirt.png";
 
-const oneProduct = async (id) => {
-  await axios.get("http://10.10.100.126:5000/api/product/prod/" + id); // Updated IP
-};
+// const oneProduct = async (id) => {
+//   await axios.get("http://10.10.100.126:5000/api/product/prod/" + id); // Updated IP
+// };
 const productDetails = () => {
   return (
     <View style={{ backgroundColor: "#F5F5DC", height: "100%" }}>
